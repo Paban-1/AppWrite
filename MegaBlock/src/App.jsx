@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import "./App.css";
+// import "./App.css";
+import { Header, Footer, Button ,Input} from "./Component/index";
 import { useDispatch } from "react-redux";
 import { login, logOut } from "./Store/authSlice";
 import authService from "./AppWrite/auth";
-import Header from "./Component/Header/Header";
-import Footer from "./Component/Footer/Footer";
+
 import { Outlet } from "react-router-dom";
 
 function App() {
@@ -12,25 +12,29 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    authService.getCurrentUser()
+    authService
+      .getCurrentUser()
       .then((userData) => {
         if (userData) {
           dispatch(login({ userData }));
         } else {
           dispatch(logOut());
         }
-      }).catch(()=>{
-        console.log("No user loged in");
-        dispatch(logOut())
-        
       })
-      .finally(() => {setLoading(false)});
+      .catch(() => {
+        console.log("No user loged in");
+        dispatch(logOut());
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
   return !loading ? (
-    <div className="min-h-screen w-full border border-black text-4xl bg-red-400 ">
+    <div className="min-h-screen w-full border border-black text-4xl bg-red-400 select-none">
       <Header />
       <main>
-        <Outlet/>LALA
+        <Outlet />
+        <Input/>
       </main>
       <Footer />
     </div>
